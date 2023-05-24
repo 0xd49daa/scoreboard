@@ -18,32 +18,19 @@ describe('<UpdateScorePopup />', () => {
     })
 
     it('should render', () => {
-        cy.getByTestId('score-popup-title').should('have.text', 'Update Score')
-        cy.getByTestId('score-popup-home-team').should('have.text', 'Mexico')
-        cy.getByTestId('score-popup-away-team').should('have.text', 'Canada')
-        cy.getByTestId('score-popup-home-score').should('have.value', '3')
-        cy.getByTestId('score-popup-away-score').should('have.value', '2')
-        cy.getByTestId('score-popup-submit').should('exist')
-        cy.getByTestId('score-popup-close').should('exist')
+        cy.getByTestId('popup-title').should('have.text', 'Update Score')
+        cy.getByTestId('score-popup-home-score').find('label').should('have.text', 'Mexico')
+        cy.getByTestId('score-popup-away-score').find('label').should('have.text', 'Canada')
+        cy.getByTestId('score-popup-home-score').find('input').should('have.value', '3')
+        cy.getByTestId('score-popup-away-score').find('input').should('have.value', '2')
+        cy.getByTestId('popup-submit').should('exist')
+        cy.getByTestId('popup-close').should('exist')
     })
 
-    it('submit button should be enabled when fields are filled with number', () => {
-        cy.getByTestId('score-popup-submit').should('be.disabled')
+    it('submit button should be enabled when there are changes', () => {
+        cy.getByTestId('popup-submit').should('be.disabled')
         cy.getByTestId('score-popup-home-score').clear().type('4')
-        cy.getByTestId('score-popup-away-score').clear()
-        cy.getByTestId('score-popup-submit').should('be.disabled')
-        cy.getByTestId('score-popup-away-score').type('3')
-        cy.getByTestId('score-popup-submit').should('be.enabled')
-        cy.getByTestId('score-popup-home-score').clear()
-        cy.getByTestId('score-popup-submit').should('be.disabled')
-
-        cy.getByTestId('score-popup-home-score').clear().type('a')
-        cy.getByTestId('score-popup-away-score').clear().type('4')
-        cy.getByTestId('score-popup-submit').should('be.disabled')
-
-        cy.getByTestId('score-popup-home-score').clear().type('4')
-        cy.getByTestId('score-popup-away-score').clear().type('b')
-        cy.getByTestId('score-popup-submit').should('be.disabled')
+        cy.getByTestId('popup-submit').should('be.enabled')
     })
 
     it('should call onSubmit when submit button is clicked', () => {
@@ -61,6 +48,7 @@ describe('<UpdateScorePopup />', () => {
 
         cy.getByTestId('score-popup-home-score').clear().type('4')
         cy.getByTestId('score-popup-away-score').clear().type('5')
+        cy.getByTestId('popup-submit').click()
         cy.wrap(onSubmit).should('have.been.calledOnceWith', 4, 5)
     })
 
@@ -77,7 +65,7 @@ describe('<UpdateScorePopup />', () => {
             awayTeamScore={2}
         />)
 
-        cy.getByTestId('score-popup-close').click()
+        cy.getByTestId('popup-close').click()
         cy.wrap(onClose).should('have.been.calledOnce')
     })
 })
