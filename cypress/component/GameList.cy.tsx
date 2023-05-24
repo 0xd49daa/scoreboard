@@ -32,10 +32,12 @@ describe('<GameList />', () => {
 
     it('should call onGameFinish when a game is finished', () => {
         const onGameFinish = cy.stub()
+        const onGameClick = cy.stub()
 
-        cy.mount(<GameList games={games} onGameClick={() => {}} onGameFinish={onGameFinish} />)
+        cy.mount(<GameList games={games} onGameClick={onGameClick} onGameFinish={onGameFinish} />)
 
         cy.getByTestId('game-list-row').eq(3).find('button').click()
         cy.wrap(onGameFinish).should('have.been.calledOnceWith', 3)
+        cy.wrap(onGameClick).should('not.have.been.called')
     })
 })
