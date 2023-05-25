@@ -5,14 +5,14 @@ import {Game} from "./reducer.ts";
 
 interface GameListProps {
     games: Game[]
-    onGameClick: (gameIndex: number) => void
-    onGameFinish: (gameIndex: number) => void
+    onGameClick: (gameId: string) => void
+    onGameFinish: (gameId: string) => void
 }
 export default function GameList(props: GameListProps) {
     const sortedGames = useMemo(() => {
-        console.log('sorting games', props.games)
+        const games = [...props.games]
 
-        return props.games.sort((a, b) => {
+        return games.sort((a, b) => {
             const delta = (b.homeScore + b.awayScore) - (a.homeScore + a.awayScore)
 
             if (delta !== 0) {
@@ -23,16 +23,16 @@ export default function GameList(props: GameListProps) {
         })
     }, [props.games])
 
-    const handleFinishClick = useCallback((e: React.MouseEvent<HTMLButtonElement, MouseEvent>, gameIndex: number) => {
+    const handleFinishClick = useCallback((e: React.MouseEvent<HTMLButtonElement, MouseEvent>, gameId: string) => {
         e.stopPropagation()
-        props.onGameFinish(gameIndex)
+        props.onGameFinish(gameId)
     }, [])
 
     return <List data-testid="game-list">
-        {sortedGames.map((game, index) => {
-            return <ListItemButton key={game.id} data-testid="game-list-row" onClick={() => props.onGameClick(index)}>
+        {sortedGames.map((game) => {
+            return <ListItemButton key={game.id} data-testid="game-list-row" onClick={() => props.onGameClick(game.id)}>
                 <ListItemText primary={`${game.homeTeam} ${game.homeScore} - ${game.awayScore} ${game.awayTeam}`} />
-                <IconButton onClick={(e) => handleFinishClick(e, index)} data-testid="stop-button">
+                <IconButton onClick={(e) => handleFinishClick(e, game.id)} data-testid="stop-button">
                     <StopCircleIcon />
                 </IconButton>
             </ListItemButton>

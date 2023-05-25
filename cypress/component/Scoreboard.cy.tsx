@@ -3,6 +3,7 @@ import '../support/component'
 import Scoreboard from "../../src/components/Scoreboard";
 import reducer, {ActionType} from "../../src/components/reducer";
 import {createGame} from "../support/utils";
+import GameList from "../../src/components/GameList";
 
 describe('<Scoreboard />', () => {
     beforeEach(() => {
@@ -36,6 +37,16 @@ describe('<Scoreboard />', () => {
 
         cy.getByTestId('stop-button').eq(0).click()
         cy.getByTestId('game-list-row').should('not.exist')
+    })
+
+    it.only('should sort by most recent games first', () => {
+        createGame('Mexico', 'Canada')
+        createGame('Spain', 'Brazil')
+        createGame('Germany', 'France')
+
+        cy.getByTestId('game-list-row').eq(0).should('have.text', 'Germany 0 - 0 France')
+        cy.getByTestId('game-list-row').eq(1).should('have.text', 'Spain 0 - 0 Brazil')
+        cy.getByTestId('game-list-row').eq(2).should('have.text', 'Mexico 0 - 0 Canada')
     })
 })
 

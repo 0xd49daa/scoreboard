@@ -2,6 +2,7 @@
 import '../support/component'
 import GameList from "../../src/components/GameList";
 import {Game} from "../../src/components/reducer";
+import {createGame} from "../support/utils";
 
 const games: Game[] = [
     { id: '1', homeTeam: 'Mexico', awayTeam: 'Canada', homeScore: 0, awayScore: 5 },
@@ -28,7 +29,7 @@ describe('<GameList />', () => {
         cy.mount(<GameList games={games} onGameClick={onGameClick} onGameFinish={() => {}} />)
 
         cy.getByTestId('game-list-row').eq(3).click()
-        cy.wrap(onGameClick).should('have.been.calledOnceWith', 3)
+        cy.wrap(onGameClick).should('have.been.calledOnceWith', "5")
     })
 
     it('should call onGameFinish when a game is finished', () => {
@@ -38,7 +39,7 @@ describe('<GameList />', () => {
         cy.mount(<GameList games={games} onGameClick={onGameClick} onGameFinish={onGameFinish} />)
 
         cy.getByTestId('game-list-row').eq(3).find('button').click()
-        cy.wrap(onGameFinish).should('have.been.calledOnceWith', 3)
+        cy.wrap(onGameFinish).should('have.been.calledOnceWith', "5")
         cy.wrap(onGameClick).should('not.have.been.called')
     })
 })

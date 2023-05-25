@@ -27,14 +27,14 @@ export type UpdateScoreAction = {
     payload: {
         homeScore: number
         awayScore: number
-        index: number
+        id: string
     }
 }
 
 export type FinishGameAction = {
     type: ActionType.FinishGame
     payload: {
-        index: number
+        id: string
     }
 }
 
@@ -53,8 +53,8 @@ export default function reducer(state: State = [], action: Action): State {
                 id: `${id}`
             }]
         case ActionType.UpdateScore:
-            return state.map((game, index) => {
-                if (index === action.payload.index) {
+            return state.map((game) => {
+                if (game.id === action.payload.id) {
                     return {
                         ...game,
                         homeScore: action.payload.homeScore,
@@ -64,8 +64,7 @@ export default function reducer(state: State = [], action: Action): State {
                 return game
             })
         case ActionType.FinishGame:
-            state.splice(action.payload.index, 1)
-            return [...state]
+            return state.filter((game) => game.id !== action.payload.id)
         default:
             return state
     }

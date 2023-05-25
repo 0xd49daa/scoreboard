@@ -12,15 +12,23 @@ export default function GameBoard() {
     const handleUpdateScore = useUpdateScore()
     const handleFinishGame = useFinishGame()
 
-    const handleGameClick = useCallback(async (gameIndex: number) => {
+    const handleGameClick = useCallback(async (gameId: string) => {
+        const game = state.find((game) => game.id === gameId)
+
+        console.log(game)
+
+        if (!game) {
+            return
+        }
+
         const result = await open({
-            homeTeamLabel: state[gameIndex].homeTeam,
-            awayTeamLabel: state[gameIndex].awayTeam,
-            homeTeamScore: state[gameIndex].homeScore,
-            awayTeamScore: state[gameIndex].awayScore
+            homeTeamLabel: game.homeTeam,
+            awayTeamLabel: game.awayTeam,
+            homeTeamScore: game.homeScore,
+            awayTeamScore: game.awayScore
         })
 
-        handleUpdateScore(gameIndex, result[0], result[1])
+        handleUpdateScore(gameId, result[0], result[1])
     }, [state, open, handleUpdateScore])
 
     return <>
