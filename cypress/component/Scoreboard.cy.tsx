@@ -14,6 +14,11 @@ describe('<Scoreboard />', () => {
         cy.getByTestId('game-list').should('exist')
     })
 
+    it('should create a new game', () => {
+        createGame('Mexico', 'Canada')
+        cy.getByTestId('game-list-row').eq(0).should('have.text', 'Mexico 0 - 0 Canada')
+    })
+
     it('should update score of the game', () => {
         createGame('Mexico', 'Canada')
 
@@ -29,7 +34,7 @@ describe('<Scoreboard />', () => {
     it('should delete the game', () => {
         createGame('Mexico', 'Canada')
 
-        cy.getByTestId('game-list-row').eq(0).find('stop-button').click()
+        cy.getByTestId('stop-button').eq(0).click()
         cy.getByTestId('game-list-row').should('not.exist')
     })
 })

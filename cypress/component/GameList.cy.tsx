@@ -1,6 +1,7 @@
 /// <reference types="cypress" />
 import '../support/component'
-import GameList, {Game} from "../../src/components/GameList";
+import GameList from "../../src/components/GameList";
+import {Game} from "../../src/components/reducer";
 
 const games: Game[] = [
     { id: '1', homeTeam: 'Mexico', awayTeam: 'Canada', homeScore: 0, awayScore: 5 },

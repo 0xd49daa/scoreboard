@@ -1,6 +1,8 @@
+import Scoreboard from "./components/Scoreboard.tsx";
+
 function App() {
   return (
-    <div>Welcome!</div>
+    <Scoreboard />
   )
 }
 
