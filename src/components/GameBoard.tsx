@@ -15,8 +15,6 @@ export default function GameBoard() {
     const handleGameClick = useCallback(async (gameId: string) => {
         const game = state.find((game) => game.id === gameId)
 
-        console.log(game)
-
         if (!game) {
             return
         }
