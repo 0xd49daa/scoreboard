@@ -2,7 +2,6 @@
 import '../support/component'
 import GameList from "../../src/components/GameList";
 import {Game} from "../../src/components/reducer";
-import {createGame} from "../support/utils";
 
 const games: Game[] = [
     { id: '1', homeTeam: 'Mexico', awayTeam: 'Canada', homeScore: 0, awayScore: 5 },

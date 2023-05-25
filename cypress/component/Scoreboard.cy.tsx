@@ -3,7 +3,6 @@ import '../support/component'
 import Scoreboard from "../../src/components/Scoreboard";
 import reducer, {ActionType} from "../../src/components/reducer";
 import {createGame} from "../support/utils";
-import GameList from "../../src/components/GameList";
 
 describe('<Scoreboard />', () => {
     beforeEach(() => {
@@ -39,7 +38,7 @@ describe('<Scoreboard />', () => {
         cy.getByTestId('game-list-row').should('not.exist')
     })
 
-    it.only('should sort by most recent games first', () => {
+    it('should sort by most recent games first', () => {
         createGame('Mexico', 'Canada')
         createGame('Spain', 'Brazil')
         createGame('Germany', 'France')
@@ -63,7 +62,10 @@ describe('reducer', () => {
 
     it('should update score of the game', () => {
         const state = reducer([], {type: ActionType.NewGame, payload: {homeTeam: 'Mexico', awayTeam: 'Canada'}})
-        const newState = reducer(state, {type: ActionType.UpdateScore, payload: {index: 0, homeScore: 4, awayScore: 5}})
+        const gameId = state[0].id
+        const newState = reducer(state, {type: ActionType.UpdateScore, payload: {id: gameId, homeScore: 4, awayScore: 5}})
+
+        console.log(newState)
 
         expect(newState[0].homeScore).to.equal(4)
         expect(newState[0].awayScore).to.equal(5)
@@ -71,7 +73,8 @@ describe('reducer', () => {
 
     it('should delete the game', () => {
         const state = reducer([], {type: ActionType.NewGame, payload: {homeTeam: 'Mexico', awayTeam: 'Canada'}})
-        const newState = reducer(state, {type: ActionType.FinishGame, payload: {index: 0}})
+        const gameId = state[0].id
+        const newState = reducer(state, {type: ActionType.FinishGame, payload: {id: gameId}})
 
         expect(newState).to.have.lengthOf(0)
     })
