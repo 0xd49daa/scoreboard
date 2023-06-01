@@ -25,10 +25,12 @@ describe('<Scoreboard />', () => {
         cy.getByTestId('game-list-row').eq(0).click()
 
         stepUpWithOnChange('score-popup-home-score')
+        cy.getByTestId('score-popup-player-name').type('J. D.')
+
         cy.getByTestId('popup-submit').click()
 
         cy.getByTestId('game-list-row').eq(0).should('contain.text', 'Mexico 1 - 0 Canada')
-        cy.getByTestId('game-goal').eq(0).should('have.text', 'scored in 0 minutes')
+        cy.getByTestId('game-goal').eq(0).should('have.text', 'scored in 0 minutes by J. D.')
     })
 
     it('should delete the game', () => {
