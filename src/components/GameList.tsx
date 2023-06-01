@@ -1,12 +1,13 @@
 import {List} from "@mui/material";
 import {useMemo} from "react";
-import {Game} from "./reducer.ts";
+import {CardColor, Game} from "./reducer.ts";
 import MatchItem from './MatchItem.tsx'
 
 interface GameListProps {
     games: Game[]
     onGameClick: (gameId: string) => void
     onGameFinish: (gameId: string) => void
+    onCard: (gameId: string, color: CardColor) => void
 }
 export default function GameList(props: GameListProps) {
     const sortedGames = useMemo(() => {
@@ -25,7 +26,7 @@ export default function GameList(props: GameListProps) {
 
     return <List data-testid="game-list">
         {sortedGames.map((game) => {
-            return <MatchItem key={game.id} game={game} onGameClick={props.onGameClick} onGameFinish={props.onGameFinish} />
+            return <MatchItem key={game.id} game={game} onGameClick={props.onGameClick} onGameFinish={props.onGameFinish} onCard={props.onCard} />
         })}
     </List>
 }

@@ -30,7 +30,19 @@ describe('<Scoreboard />', () => {
         cy.getByTestId('popup-submit').click()
 
         cy.getByTestId('game-list-row').eq(0).should('contain.text', 'Mexico 1 - 0 Canada')
-        cy.getByTestId('game-goal').eq(0).should('have.text', 'scored in 0 minutes by L.S.')
+        cy.getByTestId('game-event').eq(0).should('have.text', 'scored in 0 minutes by L.S.')
+    })
+
+    it('should log a yellow card', () => {
+        createGame('Mexico', 'Canada')
+        cy.getByTestId('yellow-card-button').eq(0).click()
+        cy.getByTestId('game-event').eq(0).should('have.text', 'yellow card in 0 minutes')
+    })
+
+    it('should log a red card', () => {
+        createGame('Mexico', 'Canada')
+        cy.getByTestId('red-card-button').eq(0).click()
+        cy.getByTestId('game-event').eq(0).should('have.text', 'red card in 0 minutes')
     })
 
     it('should delete the game', () => {

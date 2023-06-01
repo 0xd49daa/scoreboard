@@ -15,10 +15,12 @@ export type GoalEvent = {
     by: string
 }
 
+export type CardColor = 'yellow' | 'red'
+
 export type CardEvent = {
     type: EventType.Card,
     datetime: Date
-    color: 'yellow' | 'red'
+    color: CardColor
 }
 
 export type GameEvent = GameStartEvent | GoalEvent | CardEvent
@@ -69,7 +71,7 @@ export type ShowCardAction = {
     type: ActionType.ShowCard
     payload: {
         id: string,
-        color: 'yellow' | 'red'
+        color: CardColor
     }
 }
 
@@ -102,6 +104,20 @@ export default function reducer(state: State = [], action: Action): State {
                             type: EventType.Goal,
                             datetime: new Date(),
                             by: action.payload.by
+                        }]
+                    }
+                }
+                return game
+            })
+        case ActionType.ShowCard:
+            return state.map((game) => {
+                if (game.id === action.payload.id) {
+                    return {
+                        ...game,
+                        events: [...game.events, {
+                            type: EventType.Card,
+                            datetime: new Date(),
+                            color: action.payload.color
                         }]
                     }
                 }

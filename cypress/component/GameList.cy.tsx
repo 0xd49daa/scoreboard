@@ -39,6 +39,8 @@ const yellowCardEvent = {
     color: 'yellow',
 } as CardEvent
 
+const emptyFunction = () => {}
+
 const games: Game[] = [
     { id: '1', homeTeam: 'Mexico', awayTeam: 'Canada', homeScore: 0, awayScore: 5, events: [gameStartEvent, goal5MinutesEvent, redCardEvent, goal4MinutesEvent, goalNowEvent, yellowCardEvent] },
     { id: '2', homeTeam: 'Spain', awayTeam: 'Brazil', homeScore: 10, awayScore: 2, events: [gameStartEvent] },
@@ -49,7 +51,7 @@ const games: Game[] = [
 
 describe('<GameList />', () => {
     it('should render', () => {
-        cy.mount(<GameList games={games} onGameClick={() => {}} onGameFinish={() => {}} />)
+        cy.mount(<GameList games={games} onGameClick={emptyFunction} onGameFinish={emptyFunction}  onCard={emptyFunction} />)
 
         cy.getByTestId('game-list-row').eq(0).should('contain.text', 'Uruquay 6 - 6 Italy') // 12
         cy.getByTestId('game-list-row').eq(1).should('contain.text', 'Spain 10 - 2 Brazil') // 12
@@ -61,7 +63,7 @@ describe('<GameList />', () => {
     it('should call onGameClick when a game is clicked', () => {
         const onGameClick = cy.stub()
 
-        cy.mount(<GameList games={games} onGameClick={onGameClick} onGameFinish={() => {}} />)
+        cy.mount(<GameList games={games} onGameClick={onGameClick} onGameFinish={emptyFunction} onCard={emptyFunction} />)
 
         cy.getByTestId('game-list-row').eq(3).click()
         cy.wrap(onGameClick).should('have.been.calledOnceWith', "5")
@@ -71,19 +73,19 @@ describe('<GameList />', () => {
         const onGameFinish = cy.stub()
         const onGameClick = cy.stub()
 
-        cy.mount(<GameList games={games} onGameClick={onGameClick} onGameFinish={onGameFinish} />)
+        cy.mount(<GameList games={games} onGameClick={onGameClick} onGameFinish={onGameFinish} onCard={emptyFunction} />)
 
-        cy.getByTestId('game-list-row').eq(3).find('button').click()
+        cy.getByTestId('game-list-row').eq(3).find('[data-testid="stop-button"]').click()
         cy.wrap(onGameFinish).should('have.been.calledOnceWith', "5")
         cy.wrap(onGameClick).should('not.have.been.called')
     })
 
     it('should display the time of the goals and player initials and card information', () => {
-        cy.mount(<GameList games={games} onGameClick={() => {}} onGameFinish={() => {}} />)
-        cy.getByTestId('game-goal').eq(0).should('have.text', 'yellow card in 5 minutes')
-        cy.getByTestId('game-goal').eq(1).should('have.text', 'scored in 5 minutes by E.G.')
-        cy.getByTestId('game-goal').eq(2).should('have.text', 'red card in 1 minutes')
-        cy.getByTestId('game-goal').eq(3).should('have.text', 'scored in 1 minute by K.C.')
-        cy.getByTestId('game-goal').eq(4).should('have.text', 'scored in 0 minutes by J.D.')
+        cy.mount(<GameList games={games} onGameClick={emptyFunction} onGameFinish={emptyFunction} onCard={emptyFunction} />)
+        cy.getByTestId('game-event').eq(0).should('have.text', 'yellow card in 5 minutes')
+        cy.getByTestId('game-event').eq(1).should('have.text', 'scored in 5 minutes by E.G.')
+        cy.getByTestId('game-event').eq(2).should('have.text', 'scored in 1 minute by K.C.')
+        cy.getByTestId('game-event').eq(3).should('have.text', 'red card in 1 minute')
+        cy.getByTestId('game-event').eq(4).should('have.text', 'scored in 0 minutes by J.D.')
     })
 })
