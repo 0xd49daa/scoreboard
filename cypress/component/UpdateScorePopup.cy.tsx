@@ -31,7 +31,7 @@ describe('<UpdateScorePopup />', () => {
     it('submit button should be enabled when there are changes', () => {
         cy.getByTestId('popup-submit').should('be.disabled')
         stepUpWithOnChange('score-popup-home-score')
-        cy.getByTestId('score-popup-player-name').type('J. D.')
+        cy.getByTestId('score-popup-player-name').type('John Doe')
         cy.getByTestId('popup-submit').should('be.enabled')
     })
 
@@ -49,10 +49,10 @@ describe('<UpdateScorePopup />', () => {
         />)
 
         stepUpWithOnChange('score-popup-away-score')
-        cy.getByTestId('score-popup-player-name').type('J. D.')
+        cy.getByTestId('score-popup-player-name').type('John Doe')
 
         cy.getByTestId('popup-submit').click()
-        cy.wrap(onSubmit).should('have.been.calledOnceWith', 3, 3, 'J. D.')
+        cy.wrap(onSubmit).should('have.been.calledOnceWith', 3, 3, 'John Doe')
     })
 
     it('should call onClose when close button is clicked', () => {
@@ -73,7 +73,7 @@ describe('<UpdateScorePopup />', () => {
     })
 
     it('should increment value of the score by 1 for home team and cannot be changed for away team later', () => {
-        cy.getByTestId('score-popup-player-name').type('J. D.')
+        cy.getByTestId('score-popup-player-name').type('John Doe')
 
         cy.getByTestId('popup-submit').should('be.disabled')
         stepUpWithOnChange('score-popup-home-score')
@@ -85,7 +85,7 @@ describe('<UpdateScorePopup />', () => {
     })
 
     it('should decrement value of the score by 1 for away team and cannot be changed for home team later', () => {
-        cy.getByTestId('score-popup-player-name').type('J. D.')
+        cy.getByTestId('score-popup-player-name').type('John Doe')
 
         cy.getByTestId('popup-submit').should('be.disabled')
         stepUpWithOnChange('score-popup-away-score')

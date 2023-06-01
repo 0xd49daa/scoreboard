@@ -1,3 +1,20 @@
+export enum EventType {
+    GameStart = 'GAME_START',
+    Goal = 'GOAL'
+}
+
+export type GameStartEvent = {
+    type: EventType.GameStart,
+    datetime: Date
+}
+
+export type GoalEvent = {
+    type: EventType.Goal,
+    datetime: Date
+    by: string
+}
+
+export type GameEvent = GameStartEvent | GoalEvent
 
 export type Game = {
     homeTeam: string
@@ -5,7 +22,7 @@ export type Game = {
     homeScore: number
     awayScore: number
     id: string
-    events: Date[]
+    events: GameEvent[]
 }
 
 export type State = Array<Game>
@@ -26,6 +43,7 @@ export type NewGameAction = {
 export type UpdateScoreAction = {
     type: ActionType.UpdateScore
     payload: {
+        by: string
         homeScore: number
         awayScore: number
         id: string
@@ -52,7 +70,10 @@ export default function reducer(state: State = [], action: Action): State {
                 homeScore: 0,
                 awayScore: 0,
                 id: `${id}`,
-                events: [new Date()]
+                events: [{
+                    type: EventType.GameStart,
+                    datetime: new Date()
+                }]
             }]
         case ActionType.UpdateScore:
             return state.map((game) => {
@@ -61,7 +82,11 @@ export default function reducer(state: State = [], action: Action): State {
                         ...game,
                         homeScore: action.payload.homeScore,
                         awayScore: action.payload.awayScore,
-                        events: [...game.events, new Date()]
+                        events: [...game.events, {
+                            type: EventType.Goal,
+                            datetime: new Date(),
+                            by: action.payload.by
+                        }]
                     }
                 }
                 return game

@@ -26,7 +26,7 @@ export default function GameBoard() {
             awayTeamScore: game.awayScore
         })
 
-        handleUpdateScore(gameId, result[0], result[1])
+        handleUpdateScore(gameId, result[0], result[1], result[2])
     }, [state, open, handleUpdateScore])
 
     return <>
