@@ -41,6 +41,14 @@ describe('<Scoreboard />', () => {
         cy.getByTestId('game-event').eq(0).should('have.text', 'yellow card to J.D. in 0 minutes')
     })
 
+    it('should cancel log card', () => {
+        createGame('Mexico', 'Canada')
+        cy.getByTestId('red-card-button').eq(0).click()
+        cy.getByTestId('player-name').type('John Doe')
+        cy.getByTestId('popup-close').click()
+        cy.getByTestId('player-name').should('not.exist')
+    })
+
     it('should log a red card', () => {
         createGame('Mexico', 'Canada')
         cy.getByTestId('red-card-button').eq(0).click()

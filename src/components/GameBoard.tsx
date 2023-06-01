@@ -19,6 +19,11 @@ export default function GameBoard() {
 
     const handleCardClick = useCallback(async (gameId: string, color: CardColor) => {
         const result = await openPlayerNameDialog()
+
+        if (!result) {
+            return
+        }
+
         handleCard(gameId, color, result[0])
     }, [handleCard])
 
