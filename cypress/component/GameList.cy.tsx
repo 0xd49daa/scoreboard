@@ -1,33 +1,46 @@
 /// <reference types="cypress" />
 import '../support/component'
 import GameList from "../../src/components/GameList";
-import {EventType, Game, GameEvent} from "../../src/components/reducer";
+import {CardEvent, EventType, Game, GameEvent, GameStartEvent, GoalEvent} from "../../src/components/reducer";
 
 const date5MinutesAgo = new Date(Date.now() - 1000 * 60 * 5)
 const date4MinutesAgo = new Date(Date.now() - 1000 * 60 * 4)
 const gameStartEvent = {
     type: EventType.GameStart,
     datetime: date5MinutesAgo
-} as GameEvent
+} as GameStartEvent
+
 const goal5MinutesEvent = {
     type: EventType.Goal,
     datetime: date5MinutesAgo,
     by: 'John Doe'
-} as GameEvent
+} as GoalEvent
 
 const goal4MinutesEvent = {
     type: EventType.Goal,
     datetime: date4MinutesAgo,
     by: 'Karl Crueler'
-} as GameEvent
+} as GoalEvent
 const goalNowEvent = {
     type: EventType.Goal,
     datetime: new Date(),
     by: 'Eduardo Garcia'
-} as GameEvent
+} as GoalEvent
+
+const redCardEvent = {
+    type: EventType.Card,
+    datetime: date4MinutesAgo,
+    color: 'red',
+} as CardEvent
+
+const yellowCardEvent = {
+    type: EventType.Card,
+    datetime: new Date(),
+    color: 'yellow',
+} as CardEvent
 
 const games: Game[] = [
-    { id: '1', homeTeam: 'Mexico', awayTeam: 'Canada', homeScore: 0, awayScore: 5, events: [gameStartEvent, goal5MinutesEvent, goal4MinutesEvent, goalNowEvent] },
+    { id: '1', homeTeam: 'Mexico', awayTeam: 'Canada', homeScore: 0, awayScore: 5, events: [gameStartEvent, goal5MinutesEvent, redCardEvent, goal4MinutesEvent, goalNowEvent, yellowCardEvent] },
     { id: '2', homeTeam: 'Spain', awayTeam: 'Brazil', homeScore: 10, awayScore: 2, events: [gameStartEvent] },
     { id: '3', homeTeam: 'Germany', awayTeam: 'France', homeScore: 2, awayScore: 2, events: [gameStartEvent] },
     { id: '4', homeTeam: 'Uruquay', awayTeam: 'Italy', homeScore: 6, awayScore: 6, events: [gameStartEvent] },
@@ -65,10 +78,12 @@ describe('<GameList />', () => {
         cy.wrap(onGameClick).should('not.have.been.called')
     })
 
-    it('should display the time of the goals and player initials', () => {
+    it('should display the time of the goals and player initials and card information', () => {
         cy.mount(<GameList games={games} onGameClick={() => {}} onGameFinish={() => {}} />)
-        cy.getByTestId('game-goal').eq(0).should('have.text', 'scored in 5 minutes by E.G.')
-        cy.getByTestId('game-goal').eq(1).should('have.text', 'scored in 1 minute by K.C.')
-        cy.getByTestId('game-goal').eq(2).should('have.text', 'scored in 0 minutes by J.D.')
+        cy.getByTestId('game-goal').eq(0).should('have.text', 'yellow card in 5 minutes')
+        cy.getByTestId('game-goal').eq(1).should('have.text', 'scored in 5 minutes by E.G.')
+        cy.getByTestId('game-goal').eq(2).should('have.text', 'red card in 1 minutes')
+        cy.getByTestId('game-goal').eq(3).should('have.text', 'scored in 1 minute by K.C.')
+        cy.getByTestId('game-goal').eq(4).should('have.text', 'scored in 0 minutes by J.D.')
     })
 })

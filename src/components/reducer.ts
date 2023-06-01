@@ -1,6 +1,7 @@
 export enum EventType {
     GameStart = 'GAME_START',
-    Goal = 'GOAL'
+    Goal = 'GOAL',
+    Card = 'CARD',
 }
 
 export type GameStartEvent = {
@@ -14,7 +15,13 @@ export type GoalEvent = {
     by: string
 }
 
-export type GameEvent = GameStartEvent | GoalEvent
+export type CardEvent = {
+    type: EventType.Card,
+    datetime: Date
+    color: 'yellow' | 'red'
+}
+
+export type GameEvent = GameStartEvent | GoalEvent | CardEvent
 
 export type Game = {
     homeTeam: string
@@ -29,7 +36,8 @@ export type State = Array<Game>
 export enum ActionType {
     NewGame = 'NEW_GAME',
     UpdateScore = 'UPDATE_SCORE',
-    FinishGame = 'FINISH_GAME'
+    FinishGame = 'FINISH_GAME',
+    ShowCard = 'SHOW_CARD',
 }
 
 export type NewGameAction = {
@@ -57,7 +65,15 @@ export type FinishGameAction = {
     }
 }
 
-export type Action = NewGameAction | UpdateScoreAction | FinishGameAction
+export type ShowCardAction = {
+    type: ActionType.ShowCard
+    payload: {
+        id: string,
+        color: 'yellow' | 'red'
+    }
+}
+
+export type Action = NewGameAction | UpdateScoreAction | FinishGameAction | ShowCardAction
 
 let id = 0
 export default function reducer(state: State = [], action: Action): State {

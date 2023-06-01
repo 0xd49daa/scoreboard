@@ -1,7 +1,7 @@
 /// <reference types="cypress" />
 import '../support/component'
 import Scoreboard from "../../src/components/Scoreboard";
-import reducer, {ActionType, EventType, GoalEvent} from "../../src/components/reducer";
+import reducer, {ActionType, CardEvent, EventType, GoalEvent} from "../../src/components/reducer";
 import {createGame, stepUpWithOnChange} from "../support/utils";
 
 describe('<Scoreboard />', () => {
@@ -78,6 +78,16 @@ describe('reducer', () => {
 
         expect(lastEvent.type).to.equal(EventType.Goal)
         expect((lastEvent as GoalEvent).by).to.equal('Kurt Rassmusen')
+    })
+
+    it('should log a card', () => {
+        const state = reducer([], {type: ActionType.NewGame, payload: {homeTeam: 'Mexico', awayTeam: 'Canada'}})
+        const gameId = state[0].id
+        const newState = reducer(state, {type: ActionType.ShowCard, payload: {id: gameId, color: 'yellow'}})
+        const lastEvent = newState[0].events[newState[0].events.length - 1]
+
+        expect(lastEvent.type).to.equal(EventType.Card)
+        expect((lastEvent as CardEvent).color).to.equal('yellow')
     })
 
     it('should delete the game', () => {
