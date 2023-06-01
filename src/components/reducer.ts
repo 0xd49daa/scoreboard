@@ -21,6 +21,7 @@ export type CardEvent = {
     type: EventType.Card,
     datetime: Date
     color: CardColor
+    playerName: string
 }
 
 export type GameEvent = GameStartEvent | GoalEvent | CardEvent
@@ -71,7 +72,8 @@ export type ShowCardAction = {
     type: ActionType.ShowCard
     payload: {
         id: string,
-        color: CardColor
+        color: CardColor,
+        playerName: string
     }
 }
 
@@ -117,7 +119,8 @@ export default function reducer(state: State = [], action: Action): State {
                         events: [...game.events, {
                             type: EventType.Card,
                             datetime: new Date(),
-                            color: action.payload.color
+                            color: action.payload.color,
+                            playerName: action.payload.playerName
                         }]
                     }
                 }

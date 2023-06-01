@@ -31,12 +31,14 @@ const redCardEvent = {
     type: EventType.Card,
     datetime: date4MinutesAgo,
     color: 'red',
+    playerName: 'John Doe'
 } as CardEvent
 
 const yellowCardEvent = {
     type: EventType.Card,
     datetime: new Date(),
     color: 'yellow',
+    playerName: 'Eduardo Garcia'
 } as CardEvent
 
 const emptyFunction = () => {}
@@ -82,10 +84,10 @@ describe('<GameList />', () => {
 
     it('should display the time of the goals and player initials and card information', () => {
         cy.mount(<GameList games={games} onGameClick={emptyFunction} onGameFinish={emptyFunction} onCard={emptyFunction} />)
-        cy.getByTestId('game-event').eq(0).should('have.text', 'yellow card in 5 minutes')
+        cy.getByTestId('game-event').eq(0).should('have.text', 'yellow card to E.G. in 5 minutes')
         cy.getByTestId('game-event').eq(1).should('have.text', 'scored in 5 minutes by E.G.')
         cy.getByTestId('game-event').eq(2).should('have.text', 'scored in 1 minute by K.C.')
-        cy.getByTestId('game-event').eq(3).should('have.text', 'red card in 1 minute')
+        cy.getByTestId('game-event').eq(3).should('have.text', 'red card to J.D. in 1 minute')
         cy.getByTestId('game-event').eq(4).should('have.text', 'scored in 0 minutes by J.D.')
     })
 })

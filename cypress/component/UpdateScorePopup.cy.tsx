@@ -35,6 +35,14 @@ describe('<UpdateScorePopup />', () => {
         cy.getByTestId('popup-submit').should('be.enabled')
     })
 
+    it('submit button should be disabled until playerName empty', () => {
+        cy.getByTestId('popup-submit').should('be.disabled')
+        stepUpWithOnChange('score-popup-home-score')
+        cy.getByTestId('popup-submit').should('be.disabled')
+        cy.getByTestId('score-popup-player-name').type('John Doe')
+        cy.getByTestId('popup-submit').should('be.enabled')
+    })
+
     it('should call onSubmit when submit button is clicked', () => {
         const onSubmit = cy.stub()
 

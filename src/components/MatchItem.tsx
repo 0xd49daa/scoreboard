@@ -40,7 +40,7 @@ function getEventList(events: GameEvent[]) {
 
 		if (event.type === EventType.Card) {
 			const cardEvent = event as CardEvent
-			stringEvents.push(`${cardEvent.color} card ${inMinutes}`)
+			stringEvents.push(`${cardEvent.color} card to ${getInitials(cardEvent.playerName)} ${inMinutes}`)
 		} else {
 			const goalEvent = event as GoalEvent
 			const scoredBy = getInitials(goalEvent.by)

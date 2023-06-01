@@ -36,13 +36,17 @@ describe('<Scoreboard />', () => {
     it('should log a yellow card', () => {
         createGame('Mexico', 'Canada')
         cy.getByTestId('yellow-card-button').eq(0).click()
-        cy.getByTestId('game-event').eq(0).should('have.text', 'yellow card in 0 minutes')
+        cy.getByTestId('player-name').type('John Doe')
+        cy.getByTestId('popup-submit').click()
+        cy.getByTestId('game-event').eq(0).should('have.text', 'yellow card to J.D. in 0 minutes')
     })
 
     it('should log a red card', () => {
         createGame('Mexico', 'Canada')
         cy.getByTestId('red-card-button').eq(0).click()
-        cy.getByTestId('game-event').eq(0).should('have.text', 'red card in 0 minutes')
+        cy.getByTestId('player-name').type('John Doe')
+        cy.getByTestId('popup-submit').click()
+        cy.getByTestId('game-event').eq(0).should('have.text', 'red card to J.D. in 0 minutes')
     })
 
     it('should delete the game', () => {
@@ -95,11 +99,12 @@ describe('reducer', () => {
     it('should log a card', () => {
         const state = reducer([], {type: ActionType.NewGame, payload: {homeTeam: 'Mexico', awayTeam: 'Canada'}})
         const gameId = state[0].id
-        const newState = reducer(state, {type: ActionType.ShowCard, payload: {id: gameId, color: 'yellow'}})
+        const newState = reducer(state, {type: ActionType.ShowCard, payload: {id: gameId, color: 'yellow', playerName: 'John Doe'}})
         const lastEvent = newState[0].events[newState[0].events.length - 1]
 
         expect(lastEvent.type).to.equal(EventType.Card)
         expect((lastEvent as CardEvent).color).to.equal('yellow')
+        expect((lastEvent as CardEvent).playerName).to.equal('John Doe')
     })
 
     it('should delete the game', () => {

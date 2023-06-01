@@ -39,7 +39,7 @@ export default function UpdateScorePopup(props: UpdateScorePopupProps) {
         props.onSubmit(homeScore, awayScore, playerName)
     }, [homeScore, awayScore, playerName, props.onSubmit])
 
-    const isSubmitDisabled = homeScore === props.homeTeamScore && awayScore === props.awayTeamScore
+    const isSubmitDisabled = !playerName || (homeScore === props.homeTeamScore && awayScore === props.awayTeamScore)
 
     return <BaseDialog open={props.open} title={"Update Score"} onClose={props.onClose} onSubmit={handleSubmit}
                        submitDisabled={isSubmitDisabled}>
