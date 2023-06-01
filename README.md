@@ -1,7 +1,3 @@
-# DEMO
-
-[Scoreboard](https://bafybeihhvozbmzjzlc63ntwdn7m4jgdzzht5pxzpz5vh3fzxqyz3o2xywy.ipfs.dweb.link/)
-
 # Install dependencies
 
 `npm install`
