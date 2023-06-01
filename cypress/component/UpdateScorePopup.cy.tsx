@@ -1,6 +1,7 @@
 /// <reference types="cypress" />
 import '../support/component'
 import UpdateScorePopup from "../../src/components/UpdateScorePopup";
+import {stepUpWithOnChange} from '../support/utils'
 
 describe('<UpdateScorePopup />', () => {
     beforeEach(() => {
@@ -29,7 +30,7 @@ describe('<UpdateScorePopup />', () => {
 
     it('submit button should be enabled when there are changes', () => {
         cy.getByTestId('popup-submit').should('be.disabled')
-        cy.getByTestId('score-popup-home-score').clear().type('4')
+        stepUpWithOnChange('score-popup-home-score')
         cy.getByTestId('popup-submit').should('be.enabled')
     })
 
@@ -46,10 +47,9 @@ describe('<UpdateScorePopup />', () => {
             awayTeamScore={2}
         />)
 
-        cy.getByTestId('score-popup-home-score').clear().type('4')
-        cy.getByTestId('score-popup-away-score').clear().type('5')
+        stepUpWithOnChange('score-popup-away-score')
         cy.getByTestId('popup-submit').click()
-        cy.wrap(onSubmit).should('have.been.calledOnceWith', 4, 5)
+        cy.wrap(onSubmit).should('have.been.calledOnceWith', 3, 3)
     })
 
     it('should call onClose when close button is clicked', () => {
@@ -67,6 +67,26 @@ describe('<UpdateScorePopup />', () => {
 
         cy.getByTestId('popup-close').click()
         cy.wrap(onClose).should('have.been.calledOnce')
+    })
+
+    it('should increment value of the score by 1 for home team and cannot be changed for away team later', () => {
+        cy.getByTestId('popup-submit').should('be.disabled')
+        stepUpWithOnChange('score-popup-home-score')
+        cy.getByTestId('score-popup-home-score').find('input').should('have.value', '4')
+        cy.getByTestId('popup-submit').should('be.enabled')
+
+        stepUpWithOnChange('score-popup-away-score')
+        cy.getByTestId('score-popup-away-score').find('input').should('have.value', '2')
+    })
+
+    it('should decrement value of the score by 1 for away team and cannot be changed for home team later', () => {
+        cy.getByTestId('popup-submit').should('be.disabled')
+        stepUpWithOnChange('score-popup-away-score')
+        cy.getByTestId('score-popup-away-score').find('input').should('have.value', '3')
+        cy.getByTestId('popup-submit').should('be.enabled')
+
+        stepUpWithOnChange('score-popup-home-score')
+        cy.getByTestId('score-popup-home-score').find('input').should('have.value', '3')
     })
 })
 

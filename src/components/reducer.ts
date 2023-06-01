@@ -5,6 +5,7 @@ export type Game = {
     homeScore: number
     awayScore: number
     id: string
+    events: Date[]
 }
 
 export type State = Array<Game>
@@ -50,7 +51,8 @@ export default function reducer(state: State = [], action: Action): State {
                 awayTeam: action.payload.awayTeam,
                 homeScore: 0,
                 awayScore: 0,
-                id: `${id}`
+                id: `${id}`,
+                events: [new Date()]
             }]
         case ActionType.UpdateScore:
             return state.map((game) => {
@@ -58,7 +60,8 @@ export default function reducer(state: State = [], action: Action): State {
                     return {
                         ...game,
                         homeScore: action.payload.homeScore,
-                        awayScore: action.payload.awayScore
+                        awayScore: action.payload.awayScore,
+                        events: [...game.events, new Date()]
                     }
                 }
                 return game

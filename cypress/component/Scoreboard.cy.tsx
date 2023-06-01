@@ -2,7 +2,7 @@
 import '../support/component'
 import Scoreboard from "../../src/components/Scoreboard";
 import reducer, {ActionType} from "../../src/components/reducer";
-import {createGame} from "../support/utils";
+import {createGame, stepUpWithOnChange} from "../support/utils";
 
 describe('<Scoreboard />', () => {
     beforeEach(() => {
@@ -24,11 +24,11 @@ describe('<Scoreboard />', () => {
 
         cy.getByTestId('game-list-row').eq(0).click()
 
-        cy.getByTestId('score-popup-home-score').clear().type('4')
-        cy.getByTestId('score-popup-away-score').clear().type('5')
+        stepUpWithOnChange('score-popup-home-score')
         cy.getByTestId('popup-submit').click()
 
-        cy.getByTestId('game-list-row').eq(0).should('have.text', 'Mexico 4 - 5 Canada')
+        cy.getByTestId('game-list-row').eq(0).should('contain.text', 'Mexico 1 - 0 Canada')
+        cy.getByTestId('game-goal').eq(0).should('have.text', 'scored in 0 minutes')
     })
 
     it('should delete the game', () => {

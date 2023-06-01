@@ -23,8 +23,16 @@ export default function UpdateScorePopup(props: UpdateScorePopupProps) {
             return
         }
 
+        const newHomeScore = inputName === 'home' ? value : homeScore
+        const newAwayScore = inputName === 'away' ? value : awayScore
+        const summaryDelta = (newHomeScore + newAwayScore) - (props.awayTeamScore + props.homeTeamScore)
+
+        if (summaryDelta !== 1) {
+            return
+        }
+
         inputName === 'home' ? setHomeScore(value) : setAwayScore(value)
-    }, [])
+    }, [homeScore, awayScore])
 
     const handleSubmit = useCallback(() => {
         props.onSubmit(homeScore, awayScore)
@@ -39,6 +47,7 @@ export default function UpdateScorePopup(props: UpdateScorePopupProps) {
             label={props.homeTeamLabel}
             value={homeScore}
             inputProps={{
+                type: 'number',
                 inputMode: 'numeric',
                 pattern: '[0-9]*'
             }}
@@ -49,6 +58,7 @@ export default function UpdateScorePopup(props: UpdateScorePopupProps) {
             label={props.awayTeamLabel}
             value={awayScore}
             inputProps={{
+                type: 'number',
                 inputMode: 'numeric',
                 pattern: '[0-9]*'
             }}
